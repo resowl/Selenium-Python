@@ -20,9 +20,13 @@ class BasePg:
         response = requests.get(url)
         return response
 
-    def post(self, url, payload, headers):
-        response = requests.post(url, data=payload, headers=headers)
+    def post_json_data(self, url, json_data):
+        response = requests.post(url, data=json_data, headers={'Content_Type': 'application/json'})
         return response
+
+    def post_xml_data(self, url, xml_data):
+        response = requests.post(url, headers={"Content-Type": "application/xml"}, data=xml_data)
+        return response.headers["Content-Type"] == "application/xml", response.status_code == 200
 
     def delete(self, url):
         response = requests.delete(url)
@@ -30,7 +34,8 @@ class BasePg:
 
     def put(self, url, json_format_input_data, success_code):
         response = requests.put(url, json_format_input_data)
-        self.check_resp_code(response, success_code)
+        value = self.check_resp_code(response, success_code)
+        return value
 
     def get_value_after_update(self, response, value_of):
         response_json = json.loads(response.text)
@@ -68,7 +73,7 @@ class BasePg:
             self.get(url)
         return str(ve.value) == error_message
 
-    def pretty_print(msg, indent=int(2)):
+    def pretty_print(msg, indent=2):
         pprint(msg, indent=indent)
 
     def add_new_data_from_file(self, url, file_path):

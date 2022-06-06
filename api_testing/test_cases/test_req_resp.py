@@ -21,10 +21,12 @@ class Test_Req_Res(BasePg):
 
     def test_element_present(self):
         response = self.get(TestData.URL)
-        value = self.check_element_in_a_dictionary(response, "name", "Ms. Priyala Guneta")
+        value = self.check_element_in_a_dictionary(response, "name", "Kartik Marar")
         assert value
 
     def test_header(self):
-        pass
+        response = self.get(TestData.URL)
+        value = self.check_header(response, "Content-Type", "application/json")
+        assert value
 
 
