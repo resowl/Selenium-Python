@@ -12,7 +12,6 @@ def decrypt_text (text) :
         decrypted_message = fernet_obj.decrypt(text.encode()).decode()
         return decrypted_message
     else:
-        # Write fail-safe/retry mechanism here when key is not available
         print("KEY NOT FOUND")
         return text
 
