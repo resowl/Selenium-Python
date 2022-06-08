@@ -16,7 +16,7 @@ class Test_Req_Res(BasePg):
 
     def test_update_resp(self):
         response = self.get(TestData.URL)
-        value = self.check_resp_code(response, 200)
+        value = self.check_status_code(response, 200)
         assert value
 
     def test_element_present(self):
@@ -26,7 +26,17 @@ class Test_Req_Res(BasePg):
 
     def test_header(self):
         response = self.get(TestData.URL)
-        value = self.check_header(response, "Content-Type", "application/json")
+        value = self.check_header_as_per_requirement(response, "Content-Type", "application/json")
         assert value
 
+    def test_status_resp(self):
+        response = self.get(TestData.URL)
+        value = response.raise_for_status()
+        print(value)
+
+    def test_header_text(self, response):
+        response = self.get(TestData.URL)
+
+        header = self.get_header(response)
+        print(header)
 
