@@ -17,7 +17,7 @@ class Test_Req_Res(BasePg):
     def test_update_resp(self):
         response = self.get(TestData.URL)
         value = self.check_status_code(response, 200)
-        assert value #“Status code is not 200. Rather found : ” + str(resp.status_code)
+        assert value
 
     def test_element_present(self):
         response = self.get(TestData.URL)
