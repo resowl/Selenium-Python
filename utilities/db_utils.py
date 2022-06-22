@@ -12,7 +12,6 @@ class Database_Class_Page:
         query = query_to_execute
         try:
             cursor.execute(query)
-            # cursor.executemany(query, value)
             connection.commit()
         except:
             connection.rollback()
