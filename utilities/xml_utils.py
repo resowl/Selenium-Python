@@ -2,7 +2,10 @@ import requests
 from xml.etree import ElementTree as et
 from utilities import path_utils
 
-class xml_class_page:
+
+class XML_Class_Page:
+
+
     def check_root_of_xml_response(self, url):
         response = requests.get(url)
         response_body_as_xml = et.fromstring(response.content)
@@ -24,10 +27,11 @@ class xml_class_page:
         print(root.attrib)
         for child in root:
             print("childtag is-->",child.tag,"child attributeis--->", child.attrib)
-        for child in root.findall("book"): #can be changed to whatever we need to find
-            author = child.find("author").text
-            title = child.find("title").text
-            print(author, title)
+            if child.tag == 'book':
+                print(child.get('id'))
+                for attributes in child:
+                    # if (attributes.tag=='author'or attributes.tag=='title' or attributes.tag=='genre'):
+                        print(attributes.text)
 
 
     def find_in_xml_string(self, xml_string):
@@ -44,7 +48,7 @@ class xml_class_page:
 
 
 
-c= xml_class_page()
+c= XML_Class_Page()
 print("@@@@@@@@@@@@@")
 c.find_in_xml_file(path_utils.get_file("sample.xml"))
 

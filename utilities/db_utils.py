@@ -1,6 +1,6 @@
 import mysql.connector
 
-class Db_Class_Page:
+class Database_Class_Page:
     def connect_to_database(self, host, user, password, database):
         connection = mysql.connector.connect(host='localhost', user='root', passwd='root', database="prjay")
         if connection.is_connected():
@@ -29,6 +29,38 @@ class Db_Class_Page:
             connection.rollback()
         print(cursor.rowcount, "rows printed")
         print("Queries executed successfully********")
+
+    def fetch_all_records(self, connection, query):
+        cursor = connection.cursor()
+        cursor.execute(query)
+        try:
+            records = cursor.fetchall()
+            print(records)
+            for record in records:
+                print(record)
+                return (record)
+        except mysql.connector.Error as error:
+            print("Error while reading from MYSQL : ", error)
+        finally:
+            cursor.close()
+
+
+    def fetch_only_one_record(self, connection, query):
+        cursor = connection.cursor()
+        cursor.execute(query)
+        try:
+            record = cursor.fetchone()
+            print(record)
+            for entry in record:
+                print(entry)
+                return (entry)
+        except mysql.connector.Error as error:
+            print("Error while reading from MYSQL : ", error)
+        finally:
+            cursor.close()
+
+
+
 
 
 

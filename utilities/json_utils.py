@@ -58,7 +58,7 @@ class Jsondata_Class_Page:
         return (x.headers)
 
     def reading_json_data_from_a_file(self, json_data):
-        with open(json_data) as json_file:
+        with open(json_data, "r") as json_file:
             data = json.load(json_file)
             return(data)
 
