@@ -7,6 +7,8 @@ from assertpy.assertpy import assert_that, soft_assertions
 from pprint import pprint
 import responses
 import pytest
+import jsonschema
+from jsonschema import validate
 
 class Jsondata_Class_Page:
 
@@ -59,7 +61,7 @@ class Jsondata_Class_Page:
 
     def reading_json_data_from_a_file(self, json_data):
         with open(json_data, "r") as json_file:
-            data = json.load(json_file)
+            data = json.load(json_file) #json.loads(): To parse JSON from String.json.load() to Parse JSON from a file.
             return(data)
 
     def get_response_and_check_status_code(self, url):
@@ -115,6 +117,20 @@ class Jsondata_Class_Page:
                 is_valid = v.validate(entry)
                 return is_valid
         # assert_that(is_valid, description=v.errors).is_true()
+
+    def validate_json_data_string_is_valid_or_not(self, json_data_string):
+        try:
+            json.loads(json_data_string)
+        except ValueError as err:
+            return False
+        return True
+
+    def validate_json_and_respective_schema(self, jsonData, schema_string): #pass json data after converting into python object using loads()
+        try:
+            validate(instance=jsonData, schema=schema_string)
+        except jsonschema.exceptions.ValidationError as err:
+            return False
+        return True
 
     def add_responses_in_error_message(self, url, error_message):
         responses.add(responses.GET, url, body=ValueError(error_message))
