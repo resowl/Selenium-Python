@@ -1,20 +1,40 @@
 import mysql.connector
+from mysql.connector import Error
 
 class Database_Class_Page:
     def connect_to_database(self, host, user, password, database):
-        connection = mysql.connector.connect(host='localhost', user='root', passwd='root', database="prjay")
-        if connection.is_connected():
-            print("connection is successful************")
-        return connection
+        try:
+            connection = mysql.connector.connect(host='localhost', user='root', passwd='root', database="prjay")
+            if connection.is_connected():
+                db_Info = connection.get_server_info()
+                print("Connected to MySQL Server version ", db_Info)
+                print("connection is successful************")
+                return connection
+        except Error as e:
+            print("Error while connecting to MySQL", e)
+
 
     def execute_a_query(self, connection, query_to_execute):
         cursor = connection.cursor()
+        # global connection timeout arguments
+        '''global_connect_timeout = 'SET GLOBAL connect_timeout=180'
+        global_wait_timeout = 'SET GLOBAL connect_timeout=180'
+        global_interactive_timeout = 'SET GLOBAL connect_timeout=180'
+
+        cursor.execute(global_connect_timeout)
+        cursor.execute(global_wait_timeout)
+        cursor.execute(global_interactive_timeout)'''
         query = query_to_execute
         try:
             cursor.execute(query)
             connection.commit()
         except:
             connection.rollback()
+        finally:
+            if connection.is_connected():
+                cursor.close()
+                connection.close()
+                print("MySQL connection is closed")
         print(cursor.rowcount, "rows printed")
         print("Query executed successfully********")
 
