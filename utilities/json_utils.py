@@ -9,6 +9,7 @@ import responses
 import pytest
 import jsonschema
 from jsonschema import validate
+from requests.exceptions import HTTPError
 
 class Jsondata_Class_Page:
 
@@ -87,7 +88,7 @@ class Jsondata_Class_Page:
 
     def download_an_image(self, url, filename):
         response = requests.get(url)
-        with open (filename, 'wb') as f:
+        with open(filename, 'wb') as f:
             f.write(response.content)
             print(f'{filename} is downloaded')
 
@@ -154,7 +155,15 @@ class Jsondata_Class_Page:
         return value[0]
 
 
+    def check_element_in_a_dictionary(self, response, key, value):
+        response_python_dict = response.json()
+        all_entries_list = [entry[key]for entry in response_python_dict]
+        return value in all_entries_list
 
+    def get_value_after_update(self, response, value_of):
+        response_json = json.loads(response.text)
+        updated_list = jsonpath.jsonpath(response_json, value_of)
+        return (updated_list[0])
 
 
 
