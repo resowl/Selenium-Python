@@ -154,7 +154,6 @@ class Jsondata_Class_Page:
         value = jsonpath.jsonpath(response.json(), fetch_value_of)
         return value[0]
 
-
     def check_element_in_a_dictionary(self, response, key, value):
         response_python_dict = response.json()
         all_entries_list = [entry[key]for entry in response_python_dict]

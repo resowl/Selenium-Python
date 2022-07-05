@@ -18,7 +18,7 @@ class BasePg():
         self.wait = WebDriverWait(self.driver, TestData.WAIT)
 
     """This method will look for the title provided and will return current title"""
-    def get_title(self, title):
+    def get_title(self, title:str):
         self.wait.until(EC.title_is(title))
         return self.driver.title
 
