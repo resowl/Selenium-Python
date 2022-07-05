@@ -1,42 +1,18 @@
-from abc import ABC,abstractmethod
 import mysql.connector
-from python_mysql_dbconfig import read_db_config
-from mysql.connector import MySQLConnection, Error
+from mysql.connector import Error
 
-class Database_Class(ABC):
-    @abstractmethod
-    def connect(self):
-        pass
-
-    @abstractmethod
-    def execute_a_query(self, connection, query_to_execute):
-        pass
-
-    @abstractmethod
-    def execute_multiple_queries(self, connection, queries_to_execute, value):
-        pass
-
-    # @abstractmethod
-    # def fetch_records(self, connection, query):
-    #     pass
-
-class Mysql_Connect(Database_Class):
-    """ Connect to MySQL database """
-    def connect(self):
-        # conn = None
+class Database_Class_Page:
+    def connect_to_database(self, host, user, password, database):
         try:
-            connection = read_db_config()
-            conn = MySQLConnection()
-            if conn.is_connected():
+            connection = mysql.connector.connect(host='localhost', user='root', passwd='root', database="prjay")
+            if connection.is_connected():
                 db_Info = connection.get_server_info()
                 print("Connected to MySQL Server version ", db_Info)
                 print("connection is successful************")
                 return connection
-            else:
-                return None
         except Error as e:
             print("Error while connecting to MySQL", e)
-            return None
+
 
     def execute_a_query(self, connection, query_to_execute):
         cursor = connection.cursor()
@@ -81,13 +57,11 @@ class Mysql_Connect(Database_Class):
             print(records)
             for record in records:
                 print(record)
-            return records
+                return (record)
         except mysql.connector.Error as error:
             print("Error while reading from MYSQL : ", error)
-            return None
         finally:
             cursor.close()
-            return None
 
 
     def fetch_only_one_record(self, connection, query):
@@ -98,13 +72,14 @@ class Mysql_Connect(Database_Class):
             print(record)
             for entry in record:
                 print(entry)
-            return record
+                return (entry)
         except mysql.connector.Error as error:
             print("Error while reading from MYSQL : ", error)
-            return None
         finally:
             cursor.close()
-            return None
+
+
+
 
 
 
@@ -115,4 +90,3 @@ class Mysql_Connect(Database_Class):
 # value= [(103,"jaymin", "ITtech"), (102,"neha", "mba"), (104,"jacob", "test eng")]
 # query = "alter table st1 add section varchar(10) default 'A'"
 '''
-
