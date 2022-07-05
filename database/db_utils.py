@@ -116,6 +116,3 @@ class Mysql_Connect(Database_Class):
 # query = "alter table st1 add section varchar(10) default 'A'"
 '''
 
-
-m = Mysql_Connect()
-m.connect()
