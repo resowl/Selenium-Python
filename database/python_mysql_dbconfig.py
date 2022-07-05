@@ -22,3 +22,4 @@ def read_db_config(filename='.././configuration//db_config.ini', section='mysql'
     print(db)
     return db
 
+##
