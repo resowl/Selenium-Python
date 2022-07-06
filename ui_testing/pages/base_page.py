@@ -7,6 +7,7 @@ from configuration.config import TestData
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 import softest
+from typing import List, Dict
 
 
 
@@ -18,7 +19,7 @@ class BasePg():
         self.wait = WebDriverWait(self.driver, TestData.WAIT)
 
     """This method will look for the title provided and will return current title"""
-    def get_title(self, title:str):
+    def get_title(self, title: str) -> str:
         self.wait.until(EC.title_is(title))
         return self.driver.title
 
@@ -27,7 +28,7 @@ class BasePg():
 
     """This method will check if the element is visible to perform certain 
     task/action on it and will return boolean value"""
-    def ele_visible(self, by_locator):
+    def ele_visible(self, by_locator: str) -> bool:
         element = self.driver.find_element(*by_locator)
         return element.is_displayed()
 
@@ -46,11 +47,11 @@ class BasePg():
         time.sleep(5)
 
     """This method will wait for the list of elements we provide and return the list"""
-    def wait_until_all_elements_present(self, by_locator):
+    def wait_until_all_elements_present(self, by_locator: str) -> list:
         list_of_elements = self.wait.until(EC.presence_of_all_elements_located(by_locator))
         return list_of_elements
 
-    def wait_until_an_element_present(self, by_locator):
+    def wait_until_an_element_present(self, by_locator: str) -> str:
         element = self.wait.until(EC.presence_of_element_located(by_locator))
         if element == "":
             self.driver.refresh()
@@ -59,7 +60,7 @@ class BasePg():
 
 
     """This method will wait for an element until it is enabled to click"""
-    def wait_until_an_element_clickable(self, by_locator):
+    def wait_until_an_element_clickable(self, by_locator: str) -> str:
         element = self.wait.until(EC.element_to_be_clickable(by_locator))
         if element == "":
             self.driver.refresh()
@@ -67,7 +68,7 @@ class BasePg():
         return element
 
     """This method will perform click action on the element given"""
-    def do_click(self, by_locator):
+    def do_click(self, by_locator: str):
         element = self.wait.until(EC.element_to_be_clickable(by_locator))
         if element == "":
             self.driver.refresh()
@@ -75,16 +76,16 @@ class BasePg():
         element.click()
 
     """This method will check if the text box is enable to send keys and return boolean value"""
-    def is_text_box_enable(self, by_locator):
+    def is_text_box_enable(self, by_locator: str) -> bool:
         value = self.wait.until(EC.presence_of_element_located(by_locator))
         return value.is_enabled()
 
     """This method will send keys at the location provided"""
-    def do_send_Keys(self, by_locator, text):
+    def do_send_Keys(self, by_locator: str, text: int | float | str):
         self.wait.until(EC.presence_of_element_located(by_locator)).send_keys(text)
 
     """This method will return the text value of the element provided"""
-    def get_element_text(self, by_locator):
+    def get_element_text(self, by_locator: str) -> str:
         element = self.wait.until(EC.visibility_of_element_located((by_locator)))
         if element == "":
             element = self.wait.until(EC.visibility_of_element_located((by_locator)))
@@ -101,15 +102,15 @@ class BasePg():
     def sleep_time(self):
         return time.sleep(TestData.SLEEP_TIME)
 
-    def move_to_element_using_mouse_hover(self, move_to):
+    def move_to_element_using_mouse_hover(self, move_to: str):
         action = ActionChains(self.driver)
         action.move_to_element(move_to).pause(1).perform()
 
-    def element_displayed(self, element):
+    def element_displayed(self, element: str) -> bool:
         value = self.driver.find_element(element)
         return value.is_displayed()
 
-    def press_enter_key(self, by_locator):
+    def press_enter_key(self, by_locator: str):
         self.driver.find_element(*by_locator).send_keys(Keys.ENTER)
 
 
