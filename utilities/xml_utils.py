@@ -3,21 +3,23 @@ from xml.etree import ElementTree as et
 from utilities import path_utils
 
 
-def check_root_of_xml_response(self, url):
+class XML_Class_Page:
+
+    def check_root_of_xml_response(self, url):
         response = requests.get(url)
         response_body_as_xml = et.fromstring(response.content)
         xml_tree = et.ElementTree(response_body_as_xml)
         root = xml_tree.getroot()
         print(root.tag, len(root.attrib), root.text)
 
-def check_specific_element_of_xml_response(self, url, key_to_find, value_to_be ):
+    def check_specific_element_of_xml_response(self, url, key_to_find, value_to_be ):
         response = requests.get(url)
         response_body_as_xml = et.fromstring(response.content)
         xml_tree = et.ElementTree(response_body_as_xml)
         key_value = xml_tree.find(key_to_find)
         assert key_value.text == value_to_be
 
-def find_in_xml_file(self, xml_file):
+    def find_in_xml_file(self, xml_file):
         tree = et.parse(xml_file) # create element tree object
         root = tree.getroot()  # get root element
         print(root.tag)
@@ -31,7 +33,7 @@ def find_in_xml_file(self, xml_file):
                         print(attributes.text)
 
 
-def find_in_xml_string(self, xml_string):
+    def find_in_xml_string(self, xml_string):
         root= et.fromstring(xml_string)
         print(root.tag)
         print(root.attrib)
@@ -45,7 +47,9 @@ def find_in_xml_string(self, xml_string):
 
 
 
-
+c= XML_Class_Page()
+print("@@@@@@@@@@@@@")
+c.find_in_xml_file(path_utils.get_file("sample.xml"))
 
 
 

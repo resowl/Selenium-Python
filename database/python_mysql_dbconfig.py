@@ -1,6 +1,7 @@
 from configparser import ConfigParser
 
 
+
 def read_db_config(filename='.././configuration//db_config.ini', section='mysql'):
     """ Read database configuration file and return a dictionary object
     :param filename: name of the configuration file
@@ -19,7 +20,7 @@ def read_db_config(filename='.././configuration//db_config.ini', section='mysql'
             db[item[0]] = item[1]
     else:
         raise Exception('{0} not found in the {1} file'.format(section, filename))
-    print(db)
+    print("Printing from python_mysql_dbconfig file--->", db)
     return db
 
-##
+
