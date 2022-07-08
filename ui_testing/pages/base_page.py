@@ -8,6 +8,8 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 import softest
 from typing import List, Dict
+import random
+import string
 
 
 
@@ -112,6 +114,39 @@ class BasePg():
 
     def press_enter_key(self, by_locator: tuple):
         self.driver.find_element(*by_locator).send_keys(Keys.ENTER)
+
+    def generate_random_password(self):
+        random_source = string.ascii_letters + string.digits + string.punctuation
+        # select 1 lowercase
+        password = random.choice(string.ascii_lowercase)
+        # select 1 uppercase
+        password += random.choice(string.ascii_uppercase)
+        # select 1 digit
+        password += random.choice(string.digits)
+        # select 1 special symbol
+        password += random.choice(string.punctuation)
+
+        # generate other characters
+        for i in range(9):
+            password += random.choice(random_source)
+
+        password_list = list(password)
+        # shuffle all characters
+        random.SystemRandom().shuffle(password_list)
+        password = ''.join(password_list)
+        print("Random password is:", password)
+        return password
+
+    def genarate_random_phone_number(self):
+        numbers = string.digits
+        phone_number = ''.join(random.choice(numbers) for i in range(10))
+        print("Random phone number is:", phone_number)
+        return phone_number
+
+    def generate_random_email(self):
+        domains = ["hotmail.com", "gmail.com", "aol.com", "mail.com", "yahoo.com"]
+        letters = string.ascii_lowercase[:12]
+        return (''.join(random.choice(letters) for i in range(7)) + '@' + random.choice(domains))
 
 
 

@@ -52,8 +52,6 @@ class mysql_connect(Database_Class):
         cursor.execute(global_connect_timeout)
         cursor.execute(global_wait_timeout)
         cursor.execute(global_interactive_timeout)'''
-
-        #query_to_execute = "create database abcdefg"
         try:
             cursor.execute(query_to_execute)
             connection.commit()
@@ -112,4 +110,7 @@ class mysql_connect(Database_Class):
         finally:
             cursor.close()
 
-
+m =mysql_connect()
+# m.connect()
+# m.fetch_all_records("Select * from student123")
+m.fetch_only_one_record("select * from student123")
