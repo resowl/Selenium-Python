@@ -55,6 +55,8 @@ class mysql_connect(Database_Class):
         try:
             cursor.execute(query_to_execute)
             connection.commit()
+            print("Query executed successfully********")
+            print(cursor.rowcount, "rows printed")
         except:
             connection.rollback()
         finally:
@@ -62,8 +64,7 @@ class mysql_connect(Database_Class):
                 cursor.close()
                 connection.close()
                 print("MySQL connection is closed")
-        print(cursor.rowcount, "rows printed")
-        print("Query executed successfully********")
+
 
     def execute_multiple_queries(self, queries_to_execute, value):
         connection = self.connect()
@@ -73,11 +74,12 @@ class mysql_connect(Database_Class):
             for res in result_iterator:
                 print("Running query: ", res)  # Will print out a short representation of the query
                 print(f"Affected {res.rowcount} rows")
+                print("Queries executed successfully********")
             connection.commit()
         except mysql.connector.Error as error:
             print("Failed to insert record into Laptop table {}".format(error))
         print(cursor.rowcount, "rows printed")
-        print("Queries executed successfully********")
+
 
     def fetch_all_records(self, query):
         connection = self.connect()
@@ -100,7 +102,7 @@ class mysql_connect(Database_Class):
 
     def fetch_only_one_record(self, query):
         connection = self.connect()
-        cursor = connection.cursor()
+        cursor = connection.cursor(buffered=True)
         cursor.execute(query)
         try:
             fetch_result = cursor.fetchone()
@@ -110,7 +112,3 @@ class mysql_connect(Database_Class):
         finally:
             cursor.close()
 
-m =mysql_connect()
-# m.connect()
-# m.fetch_all_records("Select * from student123")
-m.fetch_only_one_record("select * from student123")
