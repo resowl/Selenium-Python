@@ -36,12 +36,13 @@ class Jsondata_Class_Page:
         with open(file_name, 'w') as f:
             f.write(json_string)
 
-    def conver_json_string_to_python_dictionary(self, json_string):
+    def conver_json_string_to_python_dictionary(self, json_string): #has to be response.text
         python_dictionary = json.loads(json_string)
         return(python_dictionary)
 
     def check_status_code(self, response, code):
-        return response.status_code == code
+        return response.status_code == code, f'Status code is not {code}. Rather found : "\
+        + str(response.status_code)'
 
     def put(self, url, json_format_input_data, success_code):
         response = requests.put(url, json_format_input_data)
@@ -53,12 +54,26 @@ class Jsondata_Class_Page:
 
     def delete(self, url):
         response = requests.delete(url)
+        # Validation
+        try:
+            assert response.status_code == 204
+            print("Result :", response.status_code)
+            print("Status : Success")
+        except AssertionError:
+            print("Result :", response.status_code)
+            print("Status : Failed")
         return response
 
     def get_header(self, url):
         x = requests.head(url)
         # print the response headers (the HTTP headers of the requested file):
         return (x.headers)
+
+    def get_response_content(self, response):
+        # Display Response Content
+        print("content = ", response.content)
+        return response.content
+
 
     def reading_json_data_from_a_file(self, json_data):
         with open(json_data, "r") as json_file:
@@ -70,7 +85,7 @@ class Jsondata_Class_Page:
         return response.status_code
 
     def get_response_and_check_content_type_is_application_json(self, url):
-        response = requests.get("http://api.zippopotam.us/us/90210")
+        response = requests.get(url)
         return response.headers["Content-Type"] == "application/json"
 
     def get_response_and_check_if_key_equals_value(self, url, key, value):
@@ -96,7 +111,7 @@ class Jsondata_Class_Page:
         print("Print each key-value pair from JSON response")
         for key, value in python_dict.items():
             print(key, ":", value)
-            return(key, ":", value)
+            # return(key, ":", value)
 
     def post_json_data(self, url, json_data):
         response = requests.post(url, data=json_data, headers={'Content_Type': 'application/json'})
@@ -164,6 +179,27 @@ class Jsondata_Class_Page:
         updated_list = jsonpath.jsonpath(response_json, value_of)
         return (updated_list[0])
 
+    def fetch_data_from_csv_file_by_converting_into_python_dictionary(self, file_name):
+        with open(file_name, "r") as f:
+            csv_file = csv.DictReader(f)  # it will convert csv to python dictionary with key value pairs so that fetching becomes easy with keys
 
+            for line in csv_file:
+                print(line['email']) #in case we want to fetch email
+
+    def write_data_in_csv_format_after_making_changes_to_a_csv_file(self, reading_file, writing_file):
+        with open(reading_file, "r") as f:
+            csv_file = csv.DictReader(f)
+
+            with open(writing_file, "w") as f:
+                field_names = ["first_name", "last_name", "email"]  # list of all columns headers
+                # field_names = ["first_name", "last_name"] #IN CASE WE WANT ONLY 2 COLUMNS
+
+                csv_writer_file = csv.DictWriter(f, fieldnames=field_names, delimeter="\t")
+
+                csv_writer_file.writeheader()  # if we want header else ignore
+
+                for line in csv_file:
+                    # del line['email'] #in case we want to delete email while writing the new file
+                    csv_writer_file.writerow(line)
 
 
